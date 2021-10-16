@@ -1,5 +1,10 @@
-# -*- coding: utf-8 -*-
-try:
-    print(2/0)
-except:
-    ZeroDivisionError , print('нельзя делить на ноль ')
+import telebot
+
+bot=telebot.TeleBot("1775479083:AAF77tFjgyfHdA0VZJ1nDI42AjI76-fefHg")
+
+@bot.message_handler(content_types=['text'])
+def send_echo(message):
+    bot.reply_to(message,message.text)
+bot.polling(none_stop=True)
+
+

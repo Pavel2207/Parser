@@ -1,7 +1,5 @@
 def check_password(p):
-    b = 0
-    s = 0
-    d = 0
+    b,s,d = 0,0,0
     if len(p) >= 10:
         for i in p:
             if i in '0123456789':

@@ -1,6 +1,5 @@
 f=open(r'C:\Users\777\Downloads\numbers.txt')
-d=[]
-s=[]
+d,s=[],[]
 for i in f:
     i=str(i)
     if len(i)==4:
