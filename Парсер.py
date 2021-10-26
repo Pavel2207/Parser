@@ -70,15 +70,14 @@ while n!=50:
 
 
 message=str()
-f=open("file.txt",encoding='utf-8')
+f=open("file.txt",encoding='utf-8') # открываем файл со значениями
 for i in f:
-    i=literal_eval(i)
+    i=literal_eval(i) # строку преобразовываем в словарь
     for j in range(len(m)):
         temp_data={m[j]:p[j]}
-        if i.keys()==temp_data.keys():
-            if str(i.values()).strip()==str(temp_data.values()).strip():
+        if i.keys()==temp_data.keys(): # сравниваем ключи
+            if str(i.values()).strip()==str(temp_data.values()).strip():  # сравниваем значения
                 print('Цена не изменилась')
-
             else:
                 print(f'---Цена {i} изменилась на {temp_data}')
                 data=str(f'---Цена {i} изменилась на {temp_data}')
@@ -87,7 +86,7 @@ for i in f:
 
         else:
             print('Ключи не совпадают')
-
+f.close()
 
 
 f=open('file.txt','w',encoding='utf-8')
