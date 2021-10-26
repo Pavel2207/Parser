@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import time
-import telebot
+from ast import literal_eval
 
 
 headers = {
@@ -34,14 +33,11 @@ if flag!=25:
 m=[]
 mark = s.find_all('p', class_='h4')
 for i in mark[1:26]:
-    m.append(i.text.split())
-
-
-
+    m.append(i.text.strip())
 
 
 n=1
-while n!=40:
+while n!=50:
     f = requests.get('https://hotline.ua/av/televizory/?p='+str(n), headers=headers)
     s = BeautifulSoup(f.content, 'html.parser')
 
@@ -61,64 +57,47 @@ while n!=40:
 
     mark = s.find_all('p', class_='h4')
     for i in mark[1:26]:
-        m.append(i.text.split())
+        m.append(i.text.strip())
     print(f'Страница {n}')
     n+=1
     print(len(m))
     print(len(p))
-    time.sleep(1)
 
 
 
 
-f = open('file.txt',encoding='utf-8')
-s = 0
-mes = str()
-num = 0
+
+
+
+message=str()
+f=open("file.txt",encoding='utf-8')
 for i in f:
-    if s!=len(m):
-        b = str(m[s]) + str(p[s]) + '\n'
-        if i.strip() == b.strip():
-            print(f'OK {s}')
-            s += 1
-        elif str(m[s]) in i and str(p[s]) not in i:
-            x = f'---Данние {i} изменились на {b}'
-            print(x)
-            s += 1
-            if x not in mes:
-                mes = mes + str(x)
-                num+=1
-                if num==10:
-                    bot = telebot.TeleBot("1831028174:AAGuVKG-9nMZVTV9ghEutGZtmjAR3oxnjbA")
-                    bot.send_message(1632649927, mes+str(time.asctime()))
-                    num=0
-                    mes=str()
+    i=literal_eval(i)
+    for j in range(len(m)):
+        temp_data={m[j]:p[j]}
+        if i.keys()==temp_data.keys():
+            if str(i.values()).strip()==str(temp_data.values()).strip():
+                print('Цена не изменилась')
+
+            else:
+                print(f'---Цена {i} изменилась на {temp_data}')
+                data=str(f'---Цена {i} изменилась на {temp_data}')
+                if data not in message:
+                    message=message+str(f'---Цена {i} изменилась на {temp_data}'+str('\n'))
 
         else:
-            print(f'NOT OK {b}')
-            s += 1
-        time.sleep(0.1)
+            print('Ключи не совпадают')
 
 
 
-f = open('file.txt', 'w',encoding='utf-8')
+f=open('file.txt','w',encoding='utf-8')
 f.close()
 
-f = open('file.txt', 'a',encoding='utf-8')
+f = open("file.txt", "a", encoding="utf-8")
+x = 0
 for i in range(len(m)):
-    f.write(str(m[i]) + str(p[i]) + '\n')
+        f.write(str({m[x]:p[x]}) +'\n')
+        x += 1
 f.close()
 
-
-print(mes)
-
-bot = telebot.TeleBot("1831028174:AAGuVKG-9nMZVTV9ghEutGZtmjAR3oxnjbA")
-bot.send_message(1632649927, mes+str(time.asctime()))
-
-
-
-
-print('Программа завершена')
-
-
-
+print(message)
